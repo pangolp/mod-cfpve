@@ -1,0 +1,16 @@
+#
+#   Copyright (C) 2016+ AzerothCore <www.azerothcore.org>
+#   released under GNU AGPL v3 license
+#   https://github.com/azerothcore/azerothcore-wotlk/blob/master/LICENSE-AGPL3
+#
+
+[worldserver]
+
+#
+#    cfpve.enable
+#        Description: Enable the module
+#        Default:     0 - Disabled
+#                     1 - Enabled
+#
+
+cfpve.enable = 1
