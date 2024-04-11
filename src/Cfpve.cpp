@@ -24,6 +24,9 @@ void temporaryFactionChange(Player* player)
 
     Player* leader = group->GetLeader();
 
+    if (!leader)
+        return;
+
     player->SetFaction(leader->GetFaction());
 }
 
