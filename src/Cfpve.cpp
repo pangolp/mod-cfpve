@@ -11,29 +11,9 @@
 
 enum MiscCrossFactionPVE
 {
-    FACTION_HUMAN = 1,
-    FACTION_ORC,
     ZONE_ICECROWN_CITADEL = 4812,
     ICC_MAP_ID = 631
 };
-
-void ChangeGroupMembersFaction(Group* group)
-{
-    Group::MemberSlotList const& members = group->GetMemberSlots();
-
-    Player* leader = group->GetLeader();
-
-    for (Group::MemberSlotList::const_iterator itr = members.begin(); itr != members.end(); ++itr)
-    {
-        if (Player* member = ObjectAccessor::FindPlayer((itr)->guid))
-        {
-            if (member == leader)
-                continue;
-
-            member->SetFaction(leader->GetFaction());
-        }
-    }
-}
 
 void temporaryFactionChange(Player* player)
 {
