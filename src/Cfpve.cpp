@@ -17,15 +17,15 @@ enum MiscCrossFactionPVE
     TOCHAMPION_MAP_ID = 650,
     ZONE_TRIAL_OF_THE_CRUSADER = 4722,
     TOCRUSADER_MAP_ID = 649,
-	ZONE_PIT_OF_SARON = 4813,
+    ZONE_PIT_OF_SARON = 4813,
     POS_MAP_ID = 658,
-	ZONE_HALLS_OF_REFLECTION = 4820,
+    ZONE_HALLS_OF_REFLECTION = 4820,
     HOR_MAP_ID = 668,
-	ZONE_FORGE_OF_SOULS = 4809,
+    ZONE_FORGE_OF_SOULS = 4809,
     FOS_MAP_ID = 632,
-	ZONE_HALLS_OF_STONE = 4264,
+    ZONE_HALLS_OF_STONE = 4264,
     HOS_MAP_ID = 599,
-	ZONE_THE_NEXUS = 4265,
+    ZONE_THE_NEXUS = 4265,
     TN_MAP_ID = 576
 };
 
@@ -55,38 +55,38 @@ public:
         {
             temporaryFactionChange(player);
         }
-		
-		if (player->GetMapId() == TOCHAMPION_MAP_ID)
+
+        if (player->GetMapId() == TOCHAMPION_MAP_ID)
         {
             temporaryFactionChange(player);
         }
-		
-		if (player->GetMapId() == TOCRUSADER_MAP_ID)
+
+        if (player->GetMapId() == TOCRUSADER_MAP_ID)
         {
             temporaryFactionChange(player);
         }
-		
-		if (player->GetMapId() == POS_MAP_ID)
+
+        if (player->GetMapId() == POS_MAP_ID)
         {
             temporaryFactionChange(player);
         }
-		
-		if (player->GetMapId() == HOR_MAP_ID)
+
+        if (player->GetMapId() == HOR_MAP_ID)
         {
             temporaryFactionChange(player);
         }
-		
-		if (player->GetMapId() == FOS_MAP_ID)
+
+        if (player->GetMapId() == FOS_MAP_ID)
         {
             temporaryFactionChange(player);
         }
-		
-		if (player->GetMapId() == HOS_MAP_ID)
+
+        if (player->GetMapId() == HOS_MAP_ID)
         {
             temporaryFactionChange(player);
-        }		
-		
-		if (player->GetMapId() == TN_MAP_ID)
+        }
+
+        if (player->GetMapId() == TN_MAP_ID)
         {
             temporaryFactionChange(player);
         }
@@ -101,43 +101,51 @@ public:
                 temporaryFactionChange(player);
             }
             break;
-			case ZONE_TRIAL_OF_THE_CHAMPION:
+
+            case ZONE_TRIAL_OF_THE_CHAMPION:
             {
                 temporaryFactionChange(player);
             }
             break;
-			case ZONE_TRIAL_OF_THE_CRUSADER:
+
+            case ZONE_TRIAL_OF_THE_CRUSADER:
             {
                 temporaryFactionChange(player);
             }
             break;
-			case ZONE_PIT_OF_SARON:
+
+            case ZONE_PIT_OF_SARON:
             {
                 temporaryFactionChange(player);
             }
             break;
-			case ZONE_HALLS_OF_REFLECTION:
+
+            case ZONE_HALLS_OF_REFLECTION:
             {
                 temporaryFactionChange(player);
             }
             break;
-			case ZONE_FORGE_OF_SOULS:
+
+            case ZONE_FORGE_OF_SOULS:
             {
                 temporaryFactionChange(player);
             }
             break;
-			case ZONE_HALLS_OF_STONE:
+
+            case ZONE_HALLS_OF_STONE:
             {
                 temporaryFactionChange(player);
             }
-			break;
-			case ZONE_THE_NEXUS:
-            {
-                temporaryFactionChange(player);
-            }
-			break;
-        default:
             break;
+
+            case ZONE_THE_NEXUS:
+            {
+                temporaryFactionChange(player);
+            }
+            break;
+
+            default:
+                break;
         }
     }
 };
