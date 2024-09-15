@@ -54,7 +54,7 @@ class CfPlayerScript : public PlayerScript
 public:
     CfPlayerScript() : PlayerScript("CfPlayerScript") { }
 
-    void OnLogin(Player* player)
+    void OnLogin(Player* player) override
     {
         switch (player->GetMapId())
         {
@@ -71,7 +71,7 @@ public:
         }
     }
 
-    void OnUpdateZone(Player* player, uint32 newZone, uint32 /*newArea*/)
+    void OnUpdateZone(Player* player, uint32 newZone, uint32 /*newArea*/) override
     {
         switch (newZone)
         {
