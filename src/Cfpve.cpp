@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Config.h"
 #include "Chat.h"
+#include "MapMgr.h"
 
 enum MiscCrossFactionPVE
 {
@@ -31,126 +32,110 @@ enum MiscCrossFactionPVE
 
 void temporaryFactionChange(Player* player)
 {
-    Group* group = player->GetGroup();
+    uint32 faction = 0;
 
-    if (!group)
-        return;
+    QueryResult result = CharacterDatabase.Query("SELECT `factionID` FROM `mod_crossfaction_pve` WHERE `instanceID`={}", player->GetMap()->GetInstanceId());
 
-    Player* leader = group->GetLeader();
+    if (!result)
+    {
+        CharacterDatabase.DirectExecute("INSERT INTO `mod_crossfaction_pve` (`instanceID`, `factionID`) VALUES ({}, {})", player->GetMap()->GetInstanceId(), player->GetFaction());
+        faction = player->GetFaction();
+    }
+    else
+    {
+        faction = (*result)[0].Get<int32>();
+    }
 
-    if (!leader)
-        return;
-
-    player->SetFaction(leader->GetFaction());
+    player->SetFaction(faction);
 }
 
 class CfPlayerScript : public PlayerScript
 {
 public:
-    CfPlayerScript() : PlayerScript("CfPlayerScript") {}
+    CfPlayerScript() : PlayerScript("CfPlayerScript") { }
 
-    void OnLogin(Player* player)
+    void OnLogin(Player* player) override
     {
-        if (player->GetMapId() == ICC_MAP_ID)
+        switch (player->GetMapId())
         {
-            temporaryFactionChange(player);
-        }
-
-        if (player->GetMapId() == TOCHAMPION_MAP_ID)
-        {
-            temporaryFactionChange(player);
-        }
-
-        if (player->GetMapId() == TOCRUSADER_MAP_ID)
-        {
-            temporaryFactionChange(player);
-        }
-
-        if (player->GetMapId() == POS_MAP_ID)
-        {
-            temporaryFactionChange(player);
-        }
-
-        if (player->GetMapId() == HOR_MAP_ID)
-        {
-            temporaryFactionChange(player);
-        }
-
-        if (player->GetMapId() == FOS_MAP_ID)
-        {
-            temporaryFactionChange(player);
-        }
-
-        if (player->GetMapId() == HOS_MAP_ID)
-        {
-            temporaryFactionChange(player);
-        }
-
-        if (player->GetMapId() == TN_MAP_ID)
-        {
-            temporaryFactionChange(player);
+            case ICC_MAP_ID:
+            case TOCHAMPION_MAP_ID:
+            case TOCRUSADER_MAP_ID:
+            case POS_MAP_ID:
+            case HOR_MAP_ID:
+            case FOS_MAP_ID:
+            case HOS_MAP_ID:
+            case TN_MAP_ID:
+                temporaryFactionChange(player);
+                break;
         }
     }
 
-    void OnUpdateZone(Player* player, uint32 newZone, uint32 /*newArea*/)
+    void OnUpdateZone(Player* player, uint32 newZone, uint32 /*newArea*/) override
     {
         switch (newZone)
         {
-            case ZONE_ICECROWN_CITADEL:
-            {
+            case ICC_MAP_ID:
+            case TOCHAMPION_MAP_ID:
+            case TOCRUSADER_MAP_ID:
+            case POS_MAP_ID:
+            case HOR_MAP_ID:
+            case FOS_MAP_ID:
+            case HOS_MAP_ID:
+            case TN_MAP_ID:
                 temporaryFactionChange(player);
-            }
-            break;
-
-            case ZONE_TRIAL_OF_THE_CHAMPION:
-            {
-                temporaryFactionChange(player);
-            }
-            break;
-
-            case ZONE_TRIAL_OF_THE_CRUSADER:
-            {
-                temporaryFactionChange(player);
-            }
-            break;
-
-            case ZONE_PIT_OF_SARON:
-            {
-                temporaryFactionChange(player);
-            }
-            break;
-
-            case ZONE_HALLS_OF_REFLECTION:
-            {
-                temporaryFactionChange(player);
-            }
-            break;
-
-            case ZONE_FORGE_OF_SOULS:
-            {
-                temporaryFactionChange(player);
-            }
-            break;
-
-            case ZONE_HALLS_OF_STONE:
-            {
-                temporaryFactionChange(player);
-            }
-            break;
-
-            case ZONE_THE_NEXUS:
-            {
-                temporaryFactionChange(player);
-            }
-            break;
-
-            default:
                 break;
         }
+    }
+
+    void OnMapChanged(Player* player) override
+    {
+        switch (player->GetMapId())
+        {
+        case ICC_MAP_ID:
+        case TOCHAMPION_MAP_ID:
+        case TOCRUSADER_MAP_ID:
+        case POS_MAP_ID:
+        case HOR_MAP_ID:
+        case FOS_MAP_ID:
+        case HOS_MAP_ID:
+        case TN_MAP_ID:
+            temporaryFactionChange(player);
+            break;
+        }
+    }
+};
+
+class CfAllMapScript : public AllMapScript
+{
+public:
+    CfAllMapScript() : AllMapScript("CfAllMapScript") { }
+
+    void OnDestroyInstance(MapInstanced* /*mapInstanced*/, Map* map) override
+    {
+        QueryResult result = CharacterDatabase.Query("SELECT `factionID` FROM `mod_crossfaction_pve` WHERE `instanceID`={}", map->GetInstanceId());
+
+        if (result)
+        {
+            CharacterDatabase.DirectExecute("DELETE FROM `mod_crossfaction_pve` WHERE `instanceID`={}", map->GetInstanceId());
+        }
+    }
+};
+
+class CfServerScript : public ServerScript
+{
+public:
+    CfServerScript() : ServerScript("CfServerScript") { }
+
+    void OnNetworkStart() override
+    {
+        CharacterDatabase.DirectExecute("DELETE FROM `mod_crossfaction_pve`");
     }
 };
 
 void CfpveScripts()
 {
     new CfPlayerScript();
+    new CfAllMapScript();
+    new CfServerScript();
 }
